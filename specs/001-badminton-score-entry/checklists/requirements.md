@@ -1,0 +1,43 @@
+# Specification Quality Checklist: 羽球成績輸入系統
+
+**Purpose**: Validate specification completeness and quality before proceeding to planning
+**Created**: 2026-06-10
+**Feature**: [spec.md](../spec.md)
+
+## Content Quality
+
+- [x] No implementation details (languages, frameworks, APIs)
+- [x] Focused on user value and business needs
+- [x] Written for non-technical stakeholders
+- [x] All mandatory sections completed
+
+## Requirement Completeness
+
+- [x] No [NEEDS CLARIFICATION] markers remain
+- [x] Requirements are testable and unambiguous
+- [x] Success criteria are measurable
+- [x] Success criteria are technology-agnostic (no implementation details)
+- [x] All acceptance scenarios are defined
+- [x] Edge cases are identified
+- [x] Scope is clearly bounded
+- [x] Dependencies and assumptions identified
+
+## Feature Readiness
+
+- [x] All functional requirements have clear acceptance criteria
+- [x] User scenarios cover primary flows
+- [x] Feature meets measurable outcomes defined in Success Criteria
+- [x] No implementation details leak into specification
+
+## Notes
+
+- Items marked incomplete require spec updates before `/speckit-clarify` or `/speckit-plan`
+- 2026-06-10 釐清完成：FR-004 團體賽採 5 點制（3 單 2 雙，先勝 3 點）；
+  FR-010 爬蟲目標網址已由使用者提供並寫入規格。全部項目通過。
+- 2026-06-10 規格更新（第二次驗證，全部項目通過）：新增 FR-016 進入畫面
+  角色選擇、FR-017 輸入模式預設與切換；FR-003／FR-004 改為勝方依比分
+  自動判定，輸入者無需另外輸入得分方或最終得分。
+- 2026-06-10 規格更新（第三次驗證，全部項目通過）：FR-010 爬蟲改為
+  依日期／時間／場次編號比對即時成績頁（網址更新為 liveresultst.html，
+  詳細比分取自彈跳視窗），輸入人員檢查無誤後才帶入比分；
+  OCR／爬蟲之實作細節（Gemini 模型等）記錄於 tech-notes.md 供規劃階段使用。
