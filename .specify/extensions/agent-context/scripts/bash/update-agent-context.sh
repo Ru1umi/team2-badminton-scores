@@ -27,8 +27,10 @@ if [[ ! -f "$EXT_CONFIG" ]]; then
 fi
 
 # Locate a suitable Python interpreter (python3, then python).
+# `--version` probe filters out the Windows Store python3 stub, which is on
+# PATH but exits non-zero without running anything.
 _python=""
-if command -v python3 >/dev/null 2>&1; then
+if command -v python3 >/dev/null 2>&1 && python3 --version >/dev/null 2>&1; then
   _python="python3"
 elif command -v python >/dev/null 2>&1 && python --version 2>&1 | grep -q "^Python 3"; then
   _python="python"
@@ -82,6 +84,9 @@ PY
   exit 0
 fi
 
+# Native Windows Python emits CRLF on stdout; strip CRs before splitting.
+_raw_opts="${_raw_opts//$'\r'/}"
+
 _opts_lines=()
 while IFS= read -r _line || [[ -n "$_line" ]]; do
   _opts_lines+=("$_line")
@@ -128,15 +133,19 @@ if [[ -z "$PLAN_PATH" ]]; then
   _plan_abs="$("$_python" - "$PROJECT_ROOT" <<'PY'
 import sys, os
 from pathlib import Path
-specs = Path(sys.argv[1]) / "specs"
+root = Path(sys.argv[1])
+specs = root / "specs"
 plans = sorted(
     specs.glob("*/plan.md"),
     key=lambda p: p.stat().st_mtime,
     reverse=True,
 )
-print(plans[0] if plans else "")
+# Print project-relative POSIX path so the caller is independent of the
+# platform's path separator and of MSYS-vs-Windows root spellings.
+print(plans[0].relative_to(root).as_posix() if plans else "")
 PY
 )"
+  _plan_abs="${_plan_abs//$'\r'/}"
   if [[ -n "$_plan_abs" ]]; then
     PLAN_PATH="${_plan_abs#"$PROJECT_ROOT/"}"
   fi
