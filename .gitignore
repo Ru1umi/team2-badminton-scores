@@ -1,0 +1,10 @@
+# oh-my-claudecode local session state
+.omc/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
